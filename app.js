@@ -18,10 +18,10 @@ const forecast = require('./utils/forecast');
 
 
 geocode('paris', (error, data) => {
-    console.log('Error: ', error)
-    console.log('Data: ', data)
-})
-forecast(48.8584, 2.2945, (error, data) => {
     console.log('Error: ', error);
     console.log('Data: ', data);
+    forecast(data.latitude, data.longitude, (error, data) => {
+        console.log('Error: ', error);
+        console.log('Data: ', data);
+    })
 })
