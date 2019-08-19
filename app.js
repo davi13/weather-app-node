@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
-const command = process.argv[2]
+const address = process.argv[2]
 
 
 
@@ -17,24 +17,25 @@ const command = process.argv[2]
 //         console.log(`There is a  ${response.body.currently.precipProbability}% chance of rain`);
 //     }
 // })
+if (!address) {
+    console.log('A location must be provide')
 
-
-geocode(command, (error, data) => {
-    if (!command) {
-        return console.log('A location must be provide')
-
-    }
-
-    if (error) {
-        return console.log(chalk.inverse.red('Error: ', error));
-    }
-
-
-    forecast(data.latitude, data.longitude, (error, forecastData) => {
+} else {
+    geocode(address, (error, data) => {
         if (error) {
             return console.log(chalk.inverse.red('Error: ', error));
         }
-        console.log(chalk.inverse.green(data.location));
-        console.log('Data: ', forecastData);
+
+        forecast(data.latitude, data.longitude, (error, forecastData) => {
+            if (error) {
+                return console.log(chalk.inverse.red('Error: ', error));
+            }
+            console.log(chalk.inverse.green(data.location));
+            console.log('Data: ', forecastData);
+        })
     })
-})
+
+}
+
+
+
