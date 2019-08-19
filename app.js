@@ -1,6 +1,8 @@
 const chalk = require('chalk');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
+const command = process.argv[2]
+
 
 
 // const url = 'https://api.darksky.net/forecast/62b6f3d89534c3cabdee2373423dbd76/37.8267,-122.4233?';
@@ -17,11 +19,22 @@ const forecast = require('./utils/forecast');
 // })
 
 
-geocode('paris', (error, data) => {
-    console.log(chalk.inverse.red('Error: ', error));
-    console.log('Data: ', data);
-    forecast(data.latitude, data.longitude, (error, data) => {
-        console.log(chalk.inverse.red('Error: ', error));
-        console.log(chalk.inverse.blue('Data: ', data));
+geocode(command, (error, data) => {
+    if (!command) {
+        return console.log('A location must be provide')
+
+    }
+
+    if (error) {
+        return console.log(chalk.inverse.red('Error: ', error));
+    }
+
+
+    forecast(data.latitude, data.longitude, (error, forecastData) => {
+        if (error) {
+            return console.log(chalk.inverse.red('Error: ', error));
+        }
+        console.log(chalk.inverse.green(data.location));
+        console.log('Data: ', forecastData);
     })
 })
