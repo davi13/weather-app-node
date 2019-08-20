@@ -21,20 +21,19 @@ if (!address) {
     console.log('A location must be provide')
 
 } else {
-    geocode(address, (error, data) => {
+    geocode(address, (error, { latitude, longitude, location }) => {
         if (error) {
             return console.log(chalk.inverse.red('Error: ', error));
         }
 
-        forecast(data.latitude, data.longitude, (error, forecastData) => {
+        forecast(latitude, longitude, (error, forecastData) => {
             if (error) {
                 return console.log(chalk.inverse.red('Error: ', error));
             }
-            console.log(chalk.inverse.green(data.location));
+            console.log(chalk.inverse.green(location));
             console.log('Data: ', forecastData);
         })
     })
-
 }
 
 
